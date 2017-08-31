@@ -119,7 +119,7 @@ class Response(object):
 
     @property
     def response_message(self):
-        return RESPONSE_MAP['0000'] if self.is_paid() else RESPONSE_MAP[self.response]
+        return RESPONSE_MAP['0000'] if self.is_paid() else RESPONSE_MAP[int(self.response)]
 
     def clean_amount(self, value):
         return Decimal("%s.%s" % (str(value)[:-2], str(value)[-2:]))
