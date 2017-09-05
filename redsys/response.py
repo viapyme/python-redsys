@@ -90,8 +90,12 @@ class Response(object):
     def __init__(self, parameters):
         MERCHANT_PARAMETERS_MAP_REVERSE = {value: key for key, value in MERCHANT_PARAMETERS_MAP.items()}
         for key, value in parameters.items():
-            clean = getattr(self, "clean_%s" % MERCHANT_PARAMETERS_MAP_REVERSE[key], None)
-            self._parameters[MERCHANT_PARAMETERS_MAP_REVERSE[key]] = clean(value) if clean else value
+            if key in MERCHANT_PARAMETERS_MAP_REVERSE:
+                clean = getattr(self, "clean_%s" % MERCHANT_PARAMETERS_MAP_REVERSE[key], None)
+                self._parameters[MERCHANT_PARAMETERS_MAP_REVERSE[key]] = clean(value) if clean else value
+            else:
+                #No tenemos contemplado el valor, lo leemos tal cual
+                self._parameters[key] = value
 
     def __getattr__(self, item):
         if item in MERCHANT_PARAMETERS_MAP:
